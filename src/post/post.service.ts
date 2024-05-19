@@ -70,7 +70,6 @@ export class PostService {
   }
 
   async delete(slug: string) {
-    // Найти пост по slug
     const post = await this.prisma.post.findUnique({
       where: {
         slug
@@ -81,7 +80,6 @@ export class PostService {
       throw new Error(`Post with slug "${slug}" not found`)
     }
 
-    // Удалить найденный пост
     return this.prisma.post.delete({
       where: {
         slug

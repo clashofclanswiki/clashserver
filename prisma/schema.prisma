@@ -39,6 +39,7 @@ model Post {
   updatedAt   DateTime     @default(now())
   title       String
   description String
+  content     String
   slug        String        @unique
   countOpened  Int?          @default(0)
   image       String
