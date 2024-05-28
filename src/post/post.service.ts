@@ -6,8 +6,21 @@ import { PostDto } from './post.dto'
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll() {
-    return this.prisma.post.findMany()
+  async getAll(skip = 0, take = 10) {
+    const [data, total] = await Promise.all([
+      this.prisma.post.findMany({
+        skip: Number(skip),
+        take: Number(take)
+      }),
+      this.prisma.post.count()
+    ])
+
+    return {
+      data,
+      total,
+      skip: Number(skip),
+      take: Number(take)
+    }
   }
 
   async getPostBySlug(slug: string) {

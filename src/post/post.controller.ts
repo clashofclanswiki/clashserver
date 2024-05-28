@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UsePipes,
   ValidationPipe
 } from '@nestjs/common'
@@ -20,8 +21,8 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  async getAll() {
-    return this.postService.getAll()
+  async getAll(@Query('skip') skip?: number, @Query('take') take?: number) {
+    return this.postService.getAll(skip, take)
   }
 
   @Get(':slug')
