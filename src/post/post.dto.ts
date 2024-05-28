@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString
+} from 'class-validator'
 
 export class PostDto {
   @IsNotEmpty()
@@ -12,6 +18,11 @@ export class PostDto {
   @IsNotEmpty()
   @IsString()
   content: string
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  pictures?: string[]
 
   @IsNotEmpty()
   @IsString()

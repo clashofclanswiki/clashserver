@@ -40,6 +40,7 @@ model Post {
   title       String
   description String
   content     String
+  pictures    String[]
   slug        String        @unique
   countOpened  Int?          @default(0)
   image       String
