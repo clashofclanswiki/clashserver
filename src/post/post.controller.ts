@@ -21,8 +21,12 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  async getAll(@Query('skip') skip?: number, @Query('take') take?: number) {
-    return this.postService.getAll(skip, take)
+  async getAll(
+    @Query('skip') skip = 0,
+    @Query('take') take = 10,
+    @Query('title') title?: string
+  ) {
+    return this.postService.getAll(Number(skip), Number(take), title)
   }
 
   @Get(':slug')

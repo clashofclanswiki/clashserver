@@ -1,22 +1,35 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/pisma.service'
 import { PostDto } from './post.dto'
+import { Prisma } from '@prisma/client'
 
 @Injectable()
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll(skip = 0, take = 10) {
-    const [data, total] = await Promise.all([
-      this.prisma.post.findMany({
-        skip: Number(skip),
-        take: Number(take)
-      }),
-      this.prisma.post.count()
-    ])
+  async getAll(skip = 0, take = 10, title?: string) {
+    const where: Prisma.PostWhereInput = title
+      ? {
+          title: {
+            contains: title,
+            mode: 'insensitive'
+          }
+        }
+      : {}
+
+    const allPosts = await this.prisma.post.findMany({
+      where,
+      orderBy: {
+        createdAt: 'desc'
+      },
+      skip,
+      take
+    })
+
+    const total = await this.prisma.post.count({ where })
 
     return {
-      data,
+      data: allPosts,
       total,
       skip: Number(skip),
       take: Number(take)

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UsePipes,
   ValidationPipe
 } from '@nestjs/common'
@@ -17,15 +18,19 @@ import { CreateCategoryDto } from './dto/create-category.dto'
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @Get()
+  async findAll(
+    @Query('skip') skip = 0,
+    @Query('take') take = 10,
+    @Query('title') title?: string
+  ) {
+    return this.categoryService.findAll(Number(skip), Number(take), title)
+  }
+
   @UsePipes(new ValidationPipe())
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto)
-  }
-
-  @Get()
-  async findAll() {
-    return this.categoryService.findAll()
   }
 
   @Get(':slug')
