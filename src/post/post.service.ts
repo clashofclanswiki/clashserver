@@ -19,6 +19,9 @@ export class PostService {
 
     const allPosts = await this.prisma.post.findMany({
       where,
+      include: {
+        category: true
+      },
       orderBy: {
         createdAt: 'desc'
       },

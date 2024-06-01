@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Put,
   Query,
   UsePipes,
   ValidationPipe
@@ -38,7 +38,7 @@ export class CategoryController {
     return this.categoryService.findOne(slug)
   }
 
-  @Patch(':slug')
+  @Put(':slug')
   async update(
     @Param('slug') slug: string,
     @Body() updateCategoryDto: UpdateCategoryDto

@@ -20,6 +20,9 @@ export class CategoryService {
 
     const allCategories = await this.prisma.category.findMany({
       where,
+      include: {
+        posts: true
+      },
       orderBy: {
         createdAt: 'desc'
       },
