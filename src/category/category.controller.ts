@@ -22,9 +22,10 @@ export class CategoryController {
   async findAll(
     @Query('skip') skip = 0,
     @Query('take') take = 10,
-    @Query('title') title?: string
+    @Query('title') title?: string,
+    @Query('type') type?: string
   ) {
-    return this.categoryService.findAll(Number(skip), Number(take), title)
+    return this.categoryService.findAll(Number(skip), Number(take), title, type)
   }
 
   @UsePipes(new ValidationPipe())
@@ -34,8 +35,12 @@ export class CategoryController {
   }
 
   @Get(':slug')
-  async findOne(@Param('slug') slug: string) {
-    return this.categoryService.findOne(slug)
+  async findOne(
+    @Param('slug') slug: string,
+    @Query('skip') skip = 0,
+    @Query('take') take = 10
+  ) {
+    return this.categoryService.findOne(slug, Number(skip), Number(take))
   }
 
   @Put(':slug')
