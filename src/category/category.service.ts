@@ -53,7 +53,15 @@ export class CategoryService {
     })
 
     if (!category) {
-      throw new Error(`Category with slug ${slug} not found`)
+      return {
+        data: null,
+        posts: {
+          data: [],
+          total: 0,
+          skip: Number(skip),
+          take: Number(take)
+        }
+      }
     }
 
     const posts = await this.prisma.post.findMany({
