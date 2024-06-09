@@ -7,15 +7,20 @@ import { Prisma } from '@prisma/client'
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll(skip = 0, take = 10, title?: string) {
-    const where: Prisma.PostWhereInput = title
-      ? {
-          title: {
-            contains: title,
-            mode: 'insensitive'
-          }
+  async getAll(skip = 0, take = 10, title?: string, categoryType?: string) {
+    const where: Prisma.PostWhereInput = {
+      ...(title && {
+        title: {
+          contains: title,
+          mode: 'insensitive'
         }
-      : {}
+      }),
+      ...(categoryType && {
+        category: {
+          type: categoryType
+        }
+      })
+    }
 
     const allPosts = await this.prisma.post.findMany({
       where,
@@ -40,7 +45,12 @@ export class PostService {
   }
 
   async getPostBySlug(slug: string) {
-    return this.prisma.post.findUnique({ where: { slug: slug } })
+    return this.prisma.post.findUnique({
+      where: { slug: slug },
+      include: {
+        category: true
+      }
+    })
   }
 
   async create(dto: PostDto, userId: string, categoryId: string) {

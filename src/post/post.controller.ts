@@ -24,9 +24,15 @@ export class PostController {
   async getAll(
     @Query('skip') skip = 0,
     @Query('take') take = 10,
-    @Query('title') title?: string
+    @Query('title') title?: string,
+    @Query('categoryType') categoryType?: string
   ) {
-    return this.postService.getAll(Number(skip), Number(take), title)
+    return this.postService.getAll(
+      Number(skip),
+      Number(take),
+      title,
+      categoryType
+    )
   }
 
   @Get(':slug')
